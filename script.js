@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     typeLoop();
 
     // ===== Live Discord Stats =====
-    const BACKEND_URL = 'https://dawn-bird-0be8.emenmenjli.workers.dev/stats';
+    const BACKEND_URL = 'https://YOUR_RENDER_URL.onrender.com/stats';
 
     async function fetchDiscordStats() {
         try {
