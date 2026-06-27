@@ -65,23 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(() => {});
 
-    // ===== Load Events from JSON =====
-    fetch('tournaments.json')
-        .then(r => r.json())
-        .then(data => {
-            const grid = document.getElementById('eventsGrid');
-            grid.innerHTML = data.map(e => `
-                <div class="event-card">
-                    <span class="event-type ${e.type}">${e.type === 'scrim' ? 'Scrim' : 'Tournament'}</span>
-                    <h3>${e.title}</h3>
-                    <div class="event-details">${e.date} <span>•</span> ${e.time}</div>
-                    <p>${e.description}</p>
-                    ${e.prize ? `<div class="event-prize">🏆 ${e.prize}</div>` : ''}
-                </div>
-            `).join('');
-        })
-        .catch(() => {});
-
     // ===== Live Discord Stats =====
     const BACKEND_URL = 'https://dawn-bird-0be8.emenmenjli.workers.dev/stats';
 
