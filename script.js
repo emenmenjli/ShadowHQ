@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     typeLoop();
 
     // ===== Load Roster from JSON =====
-    fetch('data/roster.json')
+    fetch('roster.json')
         .then(r => r.json())
         .then(data => {
             const grid = document.getElementById('rosterGrid');
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(() => {});
 
     // ===== Load Events from JSON =====
-    fetch('data/tournaments.json')
+    fetch('tournaments.json')
         .then(r => r.json())
         .then(data => {
             const grid = document.getElementById('eventsGrid');

@@ -1,0 +1,24 @@
+[
+    {
+        "name": "Emen Menjli",
+        "nickname": "Demon",
+        "image": "leader-owner.png",
+        "fallback": "EM",
+        "role": "EU Founder & Owner",
+        "description": "Founded ShadowHQ EU-MENA division."
+    },
+    {
+        "name": "Shadowprince",
+        "image": "leader-na.png",
+        "fallback": "SP",
+        "role": "NA Founder",
+        "description": "Founded and leads the ShadowHQ NA division."
+    },
+    {
+        "name": "ᶜᵒᵇʳᴬ|零",
+        "image": "leader-eu.png",
+        "fallback": "ᶜᵒᵇʳᴬ",
+        "role": "EU Clan Leader",
+        "description": "Leads the EU-MENA division. Coordinates scrims, tournaments, and recruitment."
+    }
+]

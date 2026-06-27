@@ -1,0 +1,20 @@
+[
+    {
+        "title": "Weekly In-Clan Scrims",
+        "type": "scrim",
+        "date": "Every Friday & Saturday",
+        "time": "20:00 EU / 15:00 NA",
+        "status": "upcoming",
+        "description": "Regular squad practices. All members welcome. Points tracked for seasonal rankings.",
+        "prize": ""
+    },
+    {
+        "title": "Monthly Cross-Clan Tournament",
+        "type": "tournament",
+        "date": "First Saturday of every month",
+        "time": "19:00 EU / 14:00 NA",
+        "status": "upcoming",
+        "description": "Face off against other top clans. Squad-based elimination format.",
+        "prize": "$50 Gift Card + Discord Role"
+    }
+]
