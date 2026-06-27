@@ -46,6 +46,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     typeLoop();
 
+    // ===== Load Roster from JSON =====
+    fetch('data/roster.json')
+        .then(r => r.json())
+        .then(data => {
+            const grid = document.getElementById('rosterGrid');
+            grid.innerHTML = data.map(m => `
+                <div class="roster-card">
+                    <div class="roster-avatar">
+                        <img src="${m.image}" alt="${m.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="roster-avatar-placeholder">${m.fallback}</div>
+                    </div>
+                    <h3>${m.name}${m.nickname ? ` <span style="font-size:0.75rem;color:var(--text-muted)">(${m.nickname})</span>` : ''}</h3>
+                    <span class="roster-role">${m.role}</span>
+                    <p>${m.description}</p>
+                </div>
+            `).join('');
+        })
+        .catch(() => {});
+
+    // ===== Load Events from JSON =====
+    fetch('data/tournaments.json')
+        .then(r => r.json())
+        .then(data => {
+            const grid = document.getElementById('eventsGrid');
+            grid.innerHTML = data.map(e => `
+                <div class="event-card">
+                    <span class="event-type ${e.type}">${e.type === 'scrim' ? 'Scrim' : 'Tournament'}</span>
+                    <h3>${e.title}</h3>
+                    <div class="event-details">${e.date} <span>•</span> ${e.time}</div>
+                    <p>${e.description}</p>
+                    ${e.prize ? `<div class="event-prize">🏆 ${e.prize}</div>` : ''}
+                </div>
+            `).join('');
+        })
+        .catch(() => {});
+
     // ===== Live Discord Stats =====
     const BACKEND_URL = 'https://dawn-bird-0be8.emenmenjli.workers.dev/stats';
 

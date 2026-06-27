@@ -752,6 +752,84 @@ main {
     line-height: 1.6;
 }
 
+/* ===== Events ===== */
+#events {
+    margin-bottom: 6rem;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.event-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    padding: 1.5rem;
+    transition: border-color var(--transition), transform var(--transition);
+    position: relative;
+}
+
+.event-card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-4px);
+}
+
+.event-type {
+    display: inline-block;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0.2rem 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.event-type.scrim {
+    background: rgba(10, 61, 140, 0.2);
+    color: var(--accent-light);
+    border: 1px solid rgba(10, 61, 140, 0.3);
+}
+
+.event-type.tournament {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.event-card h3 {
+    font-size: 1rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.4rem;
+}
+
+.event-details {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.event-details span { opacity: 0.6; }
+
+.event-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0.8rem 0 0;
+    line-height: 1.6;
+}
+
+.event-prize {
+    margin-top: 0.8rem;
+    font-size: 0.75rem;
+    color: #ffc107;
+    letter-spacing: 1px;
+}
+
 /* ===== Recruit ===== */
 #recruit { padding-bottom: 5rem; }
 
@@ -854,4 +932,5 @@ footer p { font-size: 0.75rem; letter-spacing: 2px; }
     .stats-grid { grid-template-columns: 1fr; gap: 1rem; }
     .features-grid { grid-template-columns: 1fr; }
     .form-container { padding: 2rem; }
+    .events-grid { grid-template-columns: 1fr; gap: 1rem; }
 }
