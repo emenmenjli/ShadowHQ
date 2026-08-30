@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const typewriterEl = document.getElementById('typewriter');
     const phrases = [
         'The fastest growing Blood Strike clan — EU-MENA & NA.',
-        '405 members and scaling. Join the roster.',
+        '567 members and scaling. Join the roster.',
         'Daily scrims, weekly tournaments, lifelong squad.',
         'Competitive. Community. Commitment.'
     ];
@@ -66,20 +66,25 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(() => {});
 
     // ===== Live Discord Stats =====
-    const BACKEND_URL = 'https://dawn-bird-0be8.emenmenjli.workers.dev/stats';
+    const BACKEND_URL = 'https://shq-stats.emenmenjli.workers.dev/stats';
+    const GUILD_ID = '1350769624014258177';
 
     async function fetchDiscordStats() {
         try {
-            const res = await fetch(BACKEND_URL);
+            const res = await fetch(BACKEND_URL, { cache: 'no-store' });
             if (!res.ok) throw new Error('Backend unavailable');
             const data = await res.json();
-            return { members: data.members, online: data.online, boosts: data.boosts };
+            return {
+                members: data.members ?? null,
+                online: data.online ?? null,
+                boosts: data.boosts ?? null
+            };
         } catch {
             try {
-                const res = await fetch('https://discord.com/api/v10/guilds/1350769624014258177/widget.json');
+                const res = await fetch(`https://discord.com/api/v10/guilds/${GUILD_ID}/widget.json`);
                 if (!res.ok) throw new Error('Widget unavailable');
                 const data = await res.json();
-                return { members: null, online: data.presence_count, boosts: null };
+                return { members: null, online: data.presence_count ?? null, boosts: null };
             } catch {
                 return null;
             }
@@ -88,17 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== Stat Counters =====
     let countersAnimated = false;
-    let statsData = { members: null, online: 0, boosts: null };
+    let statsData = { members: 567, online: 102, boosts: 4 };
 
-    async function animateCounters() {
-        if (countersAnimated) return;
-        const live = await fetchDiscordStats();
-        if (live) {
-            statsData.online = live.online;
-            if (live.members) statsData.members = live.members;
-            if (live.boosts) statsData.boosts = live.boosts;
-        }
+    function applyStats() {
+        document.querySelectorAll('.stat-number[data-target]').forEach(counter => {
+            const key = counter.getAttribute('data-target');
+            counter.textContent = statsData[key] || 0;
+        });
+    }
 
+    function animateCounters() {
         const counters = document.querySelectorAll('.stat-number[data-target]');
         counters.forEach(counter => {
             const key = counter.getAttribute('data-target');
@@ -115,7 +119,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             requestAnimationFrame(update);
         });
-        countersAnimated = true;
+    }
+
+    async function refreshStats({ animate }) {
+        const live = await fetchDiscordStats();
+        if (live) {
+            if (live.members) statsData.members = live.members;
+            if (live.online) statsData.online = live.online;
+            if (live.boosts) statsData.boosts = live.boosts;
+        }
+        if (animate) {
+            if (countersAnimated) applyStats();
+            else animateCounters();
+            countersAnimated = true;
+        } else {
+            applyStats();
+        }
     }
 
     const statsEl = document.getElementById('stats');
@@ -123,10 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
         new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    animateCounters();
+                    refreshStats({ animate: true });
                 }
             });
         }, { threshold: 0.5 }).observe(statsEl);
+        setInterval(() => refreshStats({ animate: false }), 5 * 60 * 1000);
     }
 
     // ===== Video Grid (Dynamic) =====
