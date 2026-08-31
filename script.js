@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const phrases = [
         'The fastest growing Blood Strike clan — EU-MENA & NA.',
         '567 members and scaling. Join the roster.',
-        'Daily scrims, weekly tournaments, lifelong squad.',
+        'Leveling, economy, giveaways, moderation and more.',
         'Competitive. Community. Commitment.'
     ];
     let phraseIndex = 0;
