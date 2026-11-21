@@ -1,13 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHADOWHQ | EU-MENA & NA Blood Strike Clan</title>
-    <meta name="description" content="Join ShadowHQ — the fastest growing Blood Strike clan. EU-MENA & NA divisions. 567+ members, leveling, economy, giveaways and more.">
+    <title>SHADOWHQ | Discord</title>
+    <meta name="description" content="Join the SHADOWHQ Discord server.">
     <link rel="icon" type="image/gif" href="logo.gif">
     <link rel="stylesheet" href="style.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1775623697500625" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="scanline"></div>
@@ -19,11 +18,7 @@
             <div class="nav-links">
                 <a href="#hero">Home</a>
                 <a href="#stats">Stats</a>
-                <a href="#features">Perks</a>
-                <a href="#highlights">Intel</a>
-                <a href="#roster">Roster</a>
-                <a href="#events">Events</a>
-                <a href="#recruit" class="btn-outline">Join Us</a>
+                <a href="#join" class="btn-outline">Join Discord</a>
             </div>
         </nav>
     </header>
@@ -33,12 +28,11 @@
             <div class="hero-left">
                 <h1>
                     <span class="glitch" data-text="SHADOWHQ">SHADOWHQ</span>
-                    <br><span class="text-accent">EU-MENA</span> <span class="text-accent" style="font-size: clamp(1.5rem, 3vw, 2.5rem);">&</span> <span class="text-accent">NA</span>
+                    <br><span class="text-accent">DISCORD</span>
                 </h1>
                 <p id="typewriter"><span class="cursor"></span></p>
                 <div class="hero-cta">
-                    <a href="#recruit" class="btn-primary">APPLY NOW</a>
-                    <a href="https://discord.gg/3JsaVVGMgW" class="btn-secondary" target="_blank" rel="noopener noreferrer">DISCORD</a>
+                    <a href="https://discord.gg/3JsaVVGMgW" class="btn-primary" target="_blank" rel="noopener noreferrer">JOIN DISCORD</a>
                 </div>
             </div>
 
@@ -50,7 +44,7 @@
                     </div>
                     <div class="discord-badge">
                         <span class="dot"></span>
-                        Join 567+
+                        <span id="badgeCount">Join</span>
                     </div>
                 </div>
             </div>
@@ -58,8 +52,8 @@
 
         <section id="stats" class="fade-element">
             <div class="section-header">
-                <h2>LIVE SERVER STATS</h2>
-                <p>Real-time data pulled directly from Discord</p>
+                <h2>LIVE DISCORD STATS</h2>
+                <p>Real-time data from our Discord server</p>
             </div>
             <div class="stats-grid">
                 <div class="stat-card">
@@ -77,111 +71,17 @@
             </div>
         </section>
 
-        <section id="features" class="fade-element">
-            <div class="section-header">
-                <h2>WHY SHADOWHQ</h2>
-                <p>What we offer our members</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🌍</div>
-                    <h3>EU-MENA & NA</h3>
-                    <p>Two active divisions covering Europe, MENA, and North America. Language-specific zones and 24/7 voice channels.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3>Leveling &amp; Economy</h3>
-                    <p>Earn XP from every message, level up and unlock role rewards. Collect coins with daily tasks, work and mini-games.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🛡</div>
-                    <h3>Moderation &amp; AutoMod</h3>
-                    <p>Full moderation suite with kick, ban, mute, warn and automated spam, bad-word and invite-link filters.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎫</div>
-                    <h3>Ticket Support</h3>
-                    <p>Open a private ticket for recruitment, reports or help. Staff review and close tickets from a dedicated panel.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎁</div>
-                    <h3>Giveaways</h3>
-                    <p>Regular giveaways with timed draws and button entries. Win in-game items, roles and exclusive perks.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔊</div>
-                    <h3>24/7 Voice Presence</h3>
-                    <p>Shadow stays in voice channels around the clock with AFK management and always-on music-ready presence.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="highlights" class="fade-element">
-            <div class="section-header">
-                <h2>CLAN INTEL</h2>
-                <p>Recent clips and match highlights</p>
-            </div>
-            <div id="videoGrid" class="video-grid"></div>
-        </section>
-
-        <section id="roster" class="fade-element">
-            <div class="section-header">
-                <h2>CLAN ROSTER</h2>
-                <p>Meet the leadership</p>
-            </div>
-            <div id="rosterGrid" class="roster-grid"></div>
-        </section>
-
-        <section id="events" class="fade-element">
-            <div class="section-header">
-                <h2>TOURNAMENTS & SCRIMS</h2>
-                <p>Upcoming events — members only</p>
-            </div>
-            <div id="eventsGrid" class="events-grid">
-                <div class="event-card" style="text-align:center;grid-column:1/-1;padding:3rem 2rem;">
-                    <span class="event-type tournament" style="margin-bottom:1rem">Tournament</span>
-                    <h3>Coming Soon</h3>
-                    <p style="margin-top:0.5rem">Tournaments and scrims are being scheduled. Check back soon.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="recruit" class="fade-element">
+        <section id="join" class="fade-element">
             <div class="form-container">
                 <h2>JOIN SHADOWHQ</h2>
-                <p>Ready to squad up? Getting in is simple.</p>
-
-                <div class="steps">
-                    <div class="step">
-                        <span class="step-num">1</span>
-                        <div>
-                            <h3>Join the Server</h3>
-                            <p>Hop into our Discord and say hello.</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <span class="step-num">2</span>
-                        <div>
-                            <h3>Create a Ticket</h3>
-                            <p>Head to the recruitment channel and open a ticket.</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <span class="step-num">3</span>
-                        <div>
-                            <h3>Get Vetted</h3>
-                            <p>A staff member will review your stats and get you placed.</p>
-                        </div>
-                    </div>
-                </div>
-
+                <p>Jump into the Discord and be part of the server.</p>
                 <a href="https://discord.gg/3JsaVVGMgW" class="btn-primary w-100" target="_blank" rel="noopener noreferrer">OPEN DISCORD</a>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>SHADOWHQ © 2026. EU-MENA & NA Blood Strike Community.</p>
+        <p>SHADOWHQ &copy; 2026.</p>
     </footer>
 
     <script src="script.js"></script>

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
 
     // ===== Intersection Observer (fade-in) =====
     const observer = new IntersectionObserver((entries, obs) => {
@@ -14,10 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Typewriter =====
     const typewriterEl = document.getElementById('typewriter');
     const phrases = [
-        'The fastest growing Blood Strike clan — EU-MENA & NA.',
-        '567 members and scaling. Join the roster.',
-        'Leveling, economy, giveaways, moderation and more.',
-        'Competitive. Community. Commitment.'
+        'Join the SHADOWHQ Discord server.',
+        'Live stats, active community, one invite away.',
+        'Tap in and connect with the squad.'
     ];
     let phraseIndex = 0;
     let charIndex = 0;
@@ -46,25 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     typeLoop();
 
-    // ===== Load Roster from JSON =====
-    fetch('roster.json')
-        .then(r => r.json())
-        .then(data => {
-            const grid = document.getElementById('rosterGrid');
-            grid.innerHTML = data.map(m => `
-                <div class="roster-card">
-                    <div class="roster-avatar">
-                        <img src="${m.image}" alt="${m.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                        <div class="roster-avatar-placeholder">${m.fallback}</div>
-                    </div>
-                    <h3>${m.name}${m.nickname ? ` <span style="font-size:0.75rem;color:var(--text-muted)">(${m.nickname})</span>` : ''}</h3>
-                    <span class="roster-role">${m.role}</span>
-                    <p>${m.description}</p>
-                </div>
-            `).join('');
-        })
-        .catch(() => {});
-
     // ===== Live Discord Stats =====
     const BACKEND_URL = 'https://shq-stats.emenmenjli.workers.dev/stats';
     const GUILD_ID = '1350769624014258177';
@@ -91,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ===== Stat Counters =====
     let countersAnimated = false;
     let statsData = { members: 567, online: 102, boosts: 4 };
 
@@ -100,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const key = counter.getAttribute('data-target');
             counter.textContent = statsData[key] || 0;
         });
+        const badge = document.getElementById('badgeCount');
+        if (badge && statsData.members) badge.textContent = 'Join ' + statsData.members + '+';
     }
 
     function animateCounters() {
@@ -119,6 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             requestAnimationFrame(update);
         });
+        const badge = document.getElementById('badgeCount');
+        if (badge && statsData.members) badge.textContent = 'Join ' + statsData.members + '+';
     }
 
     async function refreshStats({ animate }) {
@@ -149,90 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setInterval(() => refreshStats({ animate: false }), 5 * 60 * 1000);
     }
 
-    // ===== Video Grid (Dynamic) =====
-    const videos = []; // add YouTube IDs here: 'dQw4w9WgXcQ'
-    const grid = document.getElementById('videoGrid');
-    let currentSlide = 0;
-
-    function scrollToRecruit() {
-        document.getElementById('recruit').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function buildVideoHTML(id) {
-        return `
-            <div class="video-card has-video">
-                <div class="video-placeholder" style="position:relative;padding:0;">
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${id}" title="Gameplay" frameborder="0" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%"></iframe>
-                </div>
-                <div class="card-info"><h3>Clan Highlight</h3><p>SHQ Gameplay</p></div>
-            </div>`;
-    }
-
-    function buildPlaceholderHTML(label = 'Your clip here') {
-        return `
-            <div class="video-card add-video-card">
-                <div class="video-placeholder" style="background:linear-gradient(135deg,#000d1a,#0a0a0a);">
-                    <div class="play-icon">+</div>
-                    <p class="placeholder-text">${label}</p>
-                    <span class="submit-cta">Submit yours →</span>
-                </div>
-                <div class="card-info"><h3>Your Highlight</h3><p>Join SHQ to get featured</p></div>
-            </div>`;
-    }
-
-    function renderVideos() {
-        grid.innerHTML = '';
-        const len = videos.length;
-
-        if (len === 0) {
-            grid.innerHTML = buildPlaceholderHTML('Be the first — add your clip');
-            grid.querySelector('.add-video-card').addEventListener('click', scrollToRecruit);
-        } else if (len === 1) {
-            grid.innerHTML = buildVideoHTML(videos[0]) + buildPlaceholderHTML('Add yours +');
-            grid.querySelector('.add-video-card').addEventListener('click', scrollToRecruit);
-        } else if (len === 2) {
-            grid.innerHTML = buildVideoHTML(videos[0]) + buildVideoHTML(videos[1]) + buildPlaceholderHTML('Want yours here?');
-            grid.querySelector('.add-video-card').addEventListener('click', scrollToRecruit);
-        } else {
-            grid.classList.add('carousel-mode');
-            grid.innerHTML = `
-                <button class="carousel-btn prev" id="prevBtn">‹</button>
-                <div class="carousel-track" id="carouselTrack">
-                    ${videos.map(id => buildVideoHTML(id)).join('')}
-                    <div class="video-card add-video-card carousel-add">
-                        ${buildPlaceholderHTML('+ Add yours')}
-                    </div>
-                </div>
-                <button class="carousel-btn next" id="nextBtn">›</button>
-            `;
-            const track = document.getElementById('carouselTrack');
-            const addCard = track.querySelector('.carousel-add');
-            if (addCard) addCard.addEventListener('click', scrollToRecruit);
-
-            const maxSlide = Math.max(0, videos.length - 1);
-            currentSlide = Math.min(currentSlide, maxSlide);
-
-            function updateCarousel() {
-                const cardWidth = track.querySelector('.video-card')?.offsetWidth || 340;
-                const gap = 24;
-                track.style.transform = `translateX(-${currentSlide * (cardWidth + gap)}px)`;
-                document.getElementById('prevBtn').style.opacity = currentSlide === 0 ? '0.3' : '1';
-                document.getElementById('nextBtn').style.opacity = currentSlide >= maxSlide ? '0.3' : '1';
-            }
-
-            document.getElementById('prevBtn').addEventListener('click', () => {
-                if (currentSlide > 0) { currentSlide--; updateCarousel(); }
-            });
-            document.getElementById('nextBtn').addEventListener('click', () => {
-                if (currentSlide < maxSlide) { currentSlide++; updateCarousel(); }
-            });
-            updateCarousel();
-            window.addEventListener('resize', updateCarousel);
-        }
-    }
-
-    renderVideos();
-
     // ===== Smooth Scroll =====
     document.querySelectorAll('nav a[href^="#"]').forEach(link => {
         link.addEventListener('click', (e) => {
@@ -243,6 +142,5 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
 
 });
