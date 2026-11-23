@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initReveal();
   initTilt();
   initLogoCard();
-  initChaos();
   initStats();
   initCanvasFx();
   initMagneticButtons();
@@ -62,7 +61,7 @@ function initNav(){
   links.addEventListener('mouseleave', () => movePill(getActiveLink()));
   window.addEventListener('resize', () => movePill(getActiveLink()));
 
-  const sections = ['top','vibes','stats','chaos'].map(id => document.getElementById(id)).filter(Boolean);
+  const sections = ['top','stats'].map(id => document.getElementById(id)).filter(Boolean);
   const setActive = (id) => {
     navLinks.forEach(a => a.classList.toggle('active', a.dataset.nav === id));
     movePill(getActiveLink());
@@ -240,70 +239,6 @@ function timeAgo(date){
   if(s<60) return 'just now';
   const m=Math.floor(s/60); if(m<60) return m+'m ago';
   const h=Math.floor(m/60); return h+'h ago';
-}
-
-/* Chaos zone */
-function initChaos(){
-  const chaosBtn=$('#chaosBtn'), calmBtn=$('#calmBtn');
-  setMeter(42);
-  chaosBtn?.addEventListener('click', ()=>{
-    const val = clamp(getMeter() + Math.floor(10+Math.random()*28), 0, 100);
-    setMeter(val);
-    setChaosText(randomFrom(chaosLines(val)));
-    addLog(randomFrom(logLines(val)));
-    burst(rand(window.innerWidth*0.2, window.innerWidth*0.8), rand(window.innerHeight*0.2, window.innerHeight*0.7), 24);
-  });
-  calmBtn?.addEventListener('click', ()=>{
-    const val = clamp(getMeter() - Math.floor(12+Math.random()*20), 0, 100);
-    setMeter(val);
-    setChaosText(randomFrom([
-      'Calm mode enabled. The chaos is still there, just wearing a hoodie.',
-      'Aura stabilized. For now.',
-      'You have chosen peace. The logo is mildly disappointed.',
-      'Serenity restored. Boring, but respectable.'
-    ]));
-    addLog('System: calm button pressed. suspicious.');
-  });
-}
-function chaosLines(v){
-  if(v>80) return [
-    'Vibe report: unhinged in a charming way. Hydrate before joining VC.',
-    'Chaos critical. Someone just pinged @everyone in spirit.',
-    'The server aura is vibrating. That is either hype or caffeine.',
-    'Maximum shadow energy detected. The logo is thriving.'
-  ];
-  if(v>50) return [
-    'Vibe report: perfectly chaotic. Like a group chat with good lighting.',
-    'Energy levels spicy. Not dangerous, just interesting.',
-    'Shadow meter says: fun night ahead.',
-    'Mild chaos detected. Exactly as intended.'
-  ];
-  return [
-    'Vibe report: chill. A suspiciously wholesome calm.',
-    'Low chaos. Someone is probably making tea.',
-    'The aura is peaceful. Don\'t ruin it. Or do.',
-    'Calm vibes detected. The logo is resting its eyes.'
-  ];
-}
-function logLines(){ return [
-  'System: detected a cool person visiting the site.',
-  'System: shadow particles passed vibe check.',
-  'System: invite button looking extra clickable today.',
-  'System: logo performed one (1) dramatic shimmer.',
-  'System: Discord stats refreshed without complaining.'
-]; }
-function setChaosText(t){ const el=$('#chaosText'); if(el) el.textContent=t; }
-function addLog(t){
-  const log=$('#miniLog'); if(!log) return;
-  const d=document.createElement('div'); d.className='log-item'; d.textContent=t;
-  log.prepend(d); while(log.children.length>4) log.lastElementChild.remove();
-}
-function getMeter(){ return Number($('#meterFill')?.dataset.value || 42); }
-function setMeter(v){
-  v=clamp(Math.round(v),0,100);
-  const fill=$('#meterFill'), label=$('#meterValue');
-  if(fill){ fill.style.width=v+'%'; fill.dataset.value=String(v); }
-  if(label) label.textContent=v+'%';
 }
 
 /* Canvas FX */
