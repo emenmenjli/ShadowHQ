@@ -1,89 +1,197 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHADOWHQ | Discord</title>
-    <meta name="description" content="Join the SHADOWHQ Discord server.">
-    <link rel="icon" type="image/gif" href="logo.gif">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHADOWHQ | The Discord You Didn't Know You Needed</title>
+  <meta name="description" content="SHADOWHQ is a Discord server with live vibes, real people, and suspiciously good energy. Come say hi before the logo stares into your soul.">
+  <meta name="theme-color" content="#05060a">
+  <meta property="og:title" content="SHADOWHQ | Discord">
+  <meta property="og:description" content="Live stats, chaotic-good vibes, and one very judgmental logo. Join the SHADOWHQ Discord.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="logo.gif">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/gif" href="logo.gif">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="scanline"></div>
-    <div class="grid-overlay"></div>
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+  <div class="bg-orb orb-a" aria-hidden="true"></div>
+  <div class="bg-orb orb-b" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
 
-    <header>
-        <nav>
-            <div class="brand"><img src="logo.gif" alt="SHADOWHQ" class="brand-logo"> SHADOWHQ</div>
-            <div class="nav-links">
-                <a href="#hero">Home</a>
-                <a href="#stats">Stats</a>
-                <a href="#join" class="btn-outline">Join Discord</a>
+  <header class="site-header">
+    <nav class="nav wrap">
+      <a class="brand" href="#top" aria-label="SHADOWHQ home">
+        <img src="logo.gif" alt="SHADOWHQ logo" class="brand-logo" width="40" height="40">
+        <span>SHADOWHQ</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="#vibes">Vibes</a>
+        <a href="#stats">Live Stats</a>
+        <a href="#chaos">Chaos Zone</a>
+        <a href="https://discord.gg/3JsaVVGMgW" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-small">Join Discord</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap reveal">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="live-dot"></span> Discord server, but make it dramatic</p>
+        <h1>
+          <span class="title-line">ENTER THE</span>
+          <span class="title-main glitch" data-text="SHADOWHQ">SHADOWHQ</span>
+        </h1>
+        <p class="lede">A Discord hangout with live stats, good chaos, and a logo that definitely knows what you did. Come for the vibes. Stay because you forgot to leave.</p>
+        <div class="hero-actions">
+          <a href="https://discord.gg/3JsaVVGMgW" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="joinBtn">Join the Discord</a>
+          <button class="btn btn-ghost" id="hypeBtn" type="button">Summon Hype</button>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-pill"><span class="meta-label">Online now</span><strong id="heroOnline">...</strong></div>
+          <div class="meta-pill"><span class="meta-label">Total members</span><strong id="heroMembers">...</strong></div>
+          <div class="meta-pill"><span class="meta-label">Mood</span><strong id="moodText">Calculating vibes</strong></div>
+        </div>
+        <p class="microcopy" id="heroQuip">Warning: clicking too much may cause unnecessary hype.</p>
+      </div>
+
+      <div class="hero-visual">
+        <div class="logo-stage" id="logoStage">
+          <div class="stage-ring ring-1"></div>
+          <div class="stage-ring ring-2"></div>
+          <div class="stage-ring ring-3"></div>
+          <div class="logo-card" id="logoCard">
+            <div class="logo-shine"></div>
+            <img src="logo.gif" alt="SHADOWHQ logo" class="hero-logo" width="360" height="360" fetchpriority="high">
+            <div class="logo-caption">
+              <span class="caption-dot"></span>
+              <span id="logoCaption">The logo is watching respectfully.</span>
             </div>
-        </nav>
-    </header>
+          </div>
+          <div class="float-chip chip-a">100% Discord</div>
+          <div class="float-chip chip-b">0% boring</div>
+          <div class="float-chip chip-c" id="chipC">certified chaos</div>
+        </div>
+      </div>
+    </section>
 
-    <main>
-        <section id="hero" class="fade-element">
-            <div class="hero-left">
-                <h1>
-                    <span class="glitch" data-text="SHADOWHQ">SHADOWHQ</span>
-                    <br><span class="text-accent">DISCORD</span>
-                </h1>
-                <p id="typewriter"><span class="cursor"></span></p>
-                <div class="hero-cta">
-                    <a href="https://discord.gg/3JsaVVGMgW" class="btn-primary" target="_blank" rel="noopener noreferrer">JOIN DISCORD</a>
-                </div>
-            </div>
+    <section id="vibes" class="section wrap reveal">
+      <div class="section-head">
+        <p class="eyebrow">Why people click join</p>
+        <h2>Small server energy. <span class="accent">Big personality.</span></h2>
+        <p>Not a 47-section corporate landing page. Just the good stuff.</p>
+      </div>
+      <div class="cards-grid">
+        <article class="info-card tilt">
+          <div class="card-icon">💬</div>
+          <h3>Actually Active</h3>
+          <p>Real chats, real people, real "I should be sleeping" energy. The server isn't just a ghost town with fancy roles.</p>
+        </article>
+        <article class="info-card tilt">
+          <div class="card-icon">📡</div>
+          <h3>Live Stats</h3>
+          <p>We show live Discord numbers because fake mystery is overrated. The vibes are measurable. Mostly.</p>
+        </article>
+        <article class="info-card tilt">
+          <div class="card-icon">🛸</div>
+          <h3>Easy Entry</h3>
+          <p>Click join, land in Discord, say hi. No questline, no 12-step application, no boss fight required.</p>
+        </article>
+      </div>
+    </section>
 
-            <div class="hero-right">
-                <div class="hero-glow"></div>
-                <div class="discord-frame">
-                    <div class="discord-inner">
-                        <img src="logo.gif" alt="SHADOWHQ Discord">
-                    </div>
-                    <div class="discord-badge">
-                        <span class="dot"></span>
-                        <span id="badgeCount">Join</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <section id="stats" class="section wrap reveal">
+      <div class="section-head">
+        <p class="eyebrow">Live from Discord</p>
+        <h2>Numbers, but <span class="accent">make them alive</span></h2>
+        <p>Powered by the SHADOWHQ stats worker, with widget fallback if the internet decides to be dramatic.</p>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-icon">👥</span><span class="stat-tag">Community</span></div>
+          <div class="stat-value" id="statMembers">--</div>
+          <p class="stat-label">Total Members</p>
+          <div class="stat-bar"><span id="barMembers"></span></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-icon">🟢</span><span class="stat-tag">Right now</span></div>
+          <div class="stat-value" id="statOnline">--</div>
+          <p class="stat-label">Online Now</p>
+          <div class="stat-bar"><span id="barOnline"></span></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-icon">⚡</span><span class="stat-tag">Power</span></div>
+          <div class="stat-value" id="statBoosts">--</div>
+          <p class="stat-label">Server Boosts</p>
+          <div class="stat-bar"><span id="barBoosts"></span></div>
+        </article>
+      </div>
+      <div class="stats-footer">
+        <p id="statsStatus" class="stats-status">Fetching live Discord stats...</p>
+        <button class="btn btn-ghost btn-small" id="refreshStatsBtn" type="button">Refresh stats</button>
+      </div>
+    </section>
 
-        <section id="stats" class="fade-element">
-            <div class="section-header">
-                <h2>LIVE DISCORD STATS</h2>
-                <p>Real-time data from our Discord server</p>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" data-target="members">0</div>
-                    <div class="stat-label">Total Members</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" data-target="online">0</div>
-                    <div class="stat-label">Online Now</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" data-target="boosts">0</div>
-                    <div class="stat-label">Server Boosts</div>
-                </div>
-            </div>
-        </section>
+    <section id="chaos" class="section wrap reveal">
+      <div class="chaos-panel">
+        <div class="chaos-copy">
+          <p class="eyebrow">Highly scientific feature</p>
+          <h2>The Chaos Zone</h2>
+          <p>Press the button. Get a vibe report. Spawn harmless digital nonsense. This is what peak web engineering looks like.</p>
+          <div class="chaos-actions">
+            <button class="btn btn-primary" id="chaosBtn" type="button">Generate Chaos</button>
+            <button class="btn btn-ghost" id="calmBtn" type="button">Pretend to Be Calm</button>
+          </div>
+          <div class="chaos-output" aria-live="polite">
+            <div class="output-label">Vibe report</div>
+            <p id="chaosText">The server aura is currently stable. Suspiciously stable.</p>
+          </div>
+        </div>
+        <div class="chaos-meter-card">
+          <div class="meter-head">
+            <span>Shadow Meter</span>
+            <strong id="meterValue">42%</strong>
+          </div>
+          <div class="meter"><span id="meterFill"></span></div>
+          <div class="meter-labels"><span>chill</span><span>unhinged</span></div>
+          <div class="mini-log" id="miniLog">
+            <div class="log-item">System: logo blinked. probably fine.</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <section id="join" class="fade-element">
-            <div class="form-container">
-                <h2>JOIN SHADOWHQ</h2>
-                <p>Jump into the Discord and be part of the server.</p>
-                <a href="https://discord.gg/3JsaVVGMgW" class="btn-primary w-100" target="_blank" rel="noopener noreferrer">OPEN DISCORD</a>
-            </div>
-        </section>
-    </main>
+    <section class="join-section wrap reveal">
+      <div class="join-card">
+        <div>
+          <p class="eyebrow">Last step</p>
+          <h2>Stop scrolling. <span class="accent">Touch grass in Discord.</span></h2>
+          <p>Or don't touch grass. We are a Discord server, not your life coach.</p>
+        </div>
+        <div class="join-actions">
+          <a href="https://discord.gg/3JsaVVGMgW" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">Enter SHADOWHQ</a>
+          <p class="join-note">Instant invite. No dramatic loading screen. Sadly.</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <footer>
-        <p>SHADOWHQ &copy; 2026.</p>
-    </footer>
+  <footer class="site-footer wrap">
+    <div class="footer-brand">
+      <img src="logo.gif" alt="" width="28" height="28">
+      <span>SHADOWHQ</span>
+    </div>
+    <p>Built for Discord vibes. &copy; 2026 SHADOWHQ.</p>
+  </footer>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
