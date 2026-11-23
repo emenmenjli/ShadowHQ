@@ -22,22 +22,63 @@ document.addEventListener('DOMContentLoaded', () => {
   initStats();
   initCanvasFx();
   initMagneticButtons();
+  initScrollFx();
 });
 
 /* Nav */
 function initNav(){
   const toggle = $('#navToggle');
   const links = $('#navLinks');
+  const header = $('#siteHeader');
+  const pill = $('#navPill');
+  const navLinks = $$('.nav-link', links);
   if(!toggle || !links) return;
+
   const close = () => { toggle.setAttribute('aria-expanded','false'); links.classList.remove('open'); };
   toggle.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!open));
     links.classList.toggle('open', !open);
+    if(!open) movePill(getActiveLink() || navLinks[0]);
   });
-  $$('#navLinks a').forEach(a => a.addEventListener('click', close));
+  navLinks.forEach(a => a.addEventListener('click', () => { if(window.innerWidth <= 760) close(); }));
   document.addEventListener('click', e => { if(!e.target.closest('.nav')) close(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape') close(); });
+
+  function getActiveLink(){ return navLinks.find(a => a.classList.contains('active')) || navLinks[0]; }
+  function movePill(el){
+    if(!pill || !el || window.innerWidth <= 760) { if(pill) pill.style.opacity='0'; return; }
+    const shell = links.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    pill.style.opacity = '1';
+    pill.style.width = r.width + 'px';
+    pill.style.height = r.height + 'px';
+    pill.style.transform = `translate(${r.left - shell.left}px, ${r.top - shell.top}px)`;
+  }
+  navLinks.forEach(a => {
+    a.addEventListener('mouseenter', () => movePill(a));
+    a.addEventListener('focus', () => movePill(a));
+  });
+  links.addEventListener('mouseleave', () => movePill(getActiveLink()));
+  window.addEventListener('resize', () => movePill(getActiveLink()));
+
+  const sections = ['top','vibes','stats','chaos'].map(id => document.getElementById(id)).filter(Boolean);
+  const setActive = (id) => {
+    navLinks.forEach(a => a.classList.toggle('active', a.dataset.nav === id));
+    movePill(getActiveLink());
+  };
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver(entries => {
+      const visible = entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+      if(visible) setActive(visible.target.id === 'top' ? 'top' : visible.target.id);
+    }, {rootMargin:'-20% 0px -65% 0px', threshold:[.1,.3,.6]});
+    sections.forEach(s => io.observe(s));
+  }
+  setActive('top');
+  requestAnimationFrame(()=>movePill(getActiveLink()));
+
+  // sync header scroll state from global scroll fx
+  window.__setHeaderScrolled = (on) => header?.classList.toggle('scrolled', on);
 }
 
 /* Reveal */
@@ -153,6 +194,7 @@ function renderStats(animate){
   const m = stats.members, o = stats.online, b = stats.boosts;
   $('#heroMembers').textContent = m==null ? 'mysterious' : fmt(m);
   $('#heroOnline').textContent = o==null ? 'stealthy' : fmt(o);
+  $('#navOnline').textContent = o==null ? '...' : fmt(o);
   $('#moodText').textContent = moodFor(o,m);
   $('#chipC').textContent = o!=null && o>120 ? 'very online' : o!=null && o>50 ? 'nicely active' : 'certified chaos';
 
@@ -266,40 +308,58 @@ function setMeter(v){
 
 /* Canvas FX */
 let particles=[]; let ctx, canvas, w=0, h=0, anim;
+let mouse = {x: window.innerWidth/2, y: window.innerHeight/2, tx: window.innerWidth/2, ty: window.innerHeight/2, active:false};
+let fxBoost = 0;
 function initCanvasFx(){
   canvas = $('#fx-canvas'); if(!canvas) return;
   ctx = canvas.getContext('2d');
   resize(); window.addEventListener('resize', resize);
-  const count = reduceMotion ? 0 : Math.min(90, Math.floor(window.innerWidth / 16));
+  const count = reduceMotion ? 0 : Math.min(110, Math.floor(window.innerWidth / 14));
   particles = Array.from({length:count}, ()=>makeParticle(true));
   if(!reduceMotion) loop();
-  document.addEventListener('mousemove', e => { if(!reduceMotion && Math.random()<0.08) particles.push(spark(e.clientX,e.clientY)); });
+  window.addEventListener('mousemove', e => {
+    mouse.tx=e.clientX; mouse.ty=e.clientY; mouse.active=true;
+    const aura=$('#cursorAura'); if(aura){ aura.classList.add('visible'); aura.style.left=e.clientX+'px'; aura.style.top=e.clientY+'px'; }
+    if(!reduceMotion && Math.random()<0.12) particles.push(spark(e.clientX,e.clientY));
+  }, {passive:true});
+  window.addEventListener('mouseleave', ()=>$('#cursorAura')?.classList.remove('visible'));
 }
 function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; }
 function makeParticle(randomY=false){
-  return { x:Math.random()*w, y:randomY?Math.random()*h:h+20, r:Math.random()*1.8+.4, vx:(Math.random()-.5)*.35, vy:-Math.random()*.45-.15, a:Math.random()*.45+.15, life:1, decay:0, hue: Math.random()>0.5 ? 210 : 265 };
+  return { x:Math.random()*w, y:randomY?Math.random()*h:h+20, r:Math.random()*1.9+.35, vx:(Math.random()-.5)*.3, vy:-Math.random()*.4-.12, a:Math.random()*.45+.12, life:1, decay:0, hue: Math.random()>0.5 ? 210 : 265 };
 }
-function spark(x,y){
-  const a=Math.random()*Math.PI*2, s=Math.random()*2+.5;
-  return {x,y,r:Math.random()*2+1,vx:Math.cos(a)*s,vy:Math.sin(a)*s,a:1,life:1,decay:0.02+Math.random()*0.02,hue:Math.random()>.5?205:280};
+function spark(x,y,boost=1){
+  const a=Math.random()*Math.PI*2, s=(Math.random()*2.2+.6)*boost;
+  return {x,y,r:Math.random()*2.2+.8,vx:Math.cos(a)*s,vy:Math.sin(a)*s,a:1,life:1,decay:0.018+Math.random()*0.02,hue:Math.random()>.45?205:280};
 }
 function burst(x,y,count=20){
   if(reduceMotion) return;
-  for(let i=0;i<count;i++) particles.push(spark(x,y));
-  if(particles.length>220) particles.splice(0, particles.length-220);
+  fxBoost = Math.min(1, fxBoost + 0.35);
+  for(let i=0;i<count;i++) particles.push(spark(x,y,1.15));
+  if(particles.length>260) particles.splice(0, particles.length-260);
 }
 function loop(){
   ctx.clearRect(0,0,w,h);
-  for(let i=particles.length-1;i>=0;i--){
+  mouse.x += (mouse.tx-mouse.x)*0.08; mouse.y += (mouse.ty-mouse.y)*0.08;
+  fxBoost *= 0.96;
+  const g = ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,220);
+  g.addColorStop(0, `rgba(110,168,255,${0.07+fxBoost*0.05})`);
+  g.addColorStop(1, 'rgba(110,168,255,0)');
+  ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+
+  for(let i=0;i<particles.length;i++){
     const p=particles[i];
+    const dx=mouse.x-p.x, dy=mouse.y-p.y, dist=Math.hypot(dx,dy) || 1;
+    if(dist < 140){ p.vx -= (dx/dist)*0.003; p.vy -= (dy/dist)*0.003; }
     p.x+=p.vx; p.y+=p.vy; p.life-=p.decay;
-    if(p.decay){ p.vy+=0.01; p.a=p.life; }
+    if(p.decay){ p.vy+=0.015; p.a=p.life; }
+    if(!p.decay){ p.vx *= 0.995; p.vy *= 0.995; }
     ctx.beginPath();
-    ctx.fillStyle=`hsla(${p.hue}, 90%, 65%, ${Math.max(0,p.a*p.life)})`;
+    ctx.fillStyle=`hsla(${p.hue}, 90%, 68%, ${Math.max(0,p.a*p.life)})`;
     ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
     if(p.y < -20 || p.life<=0 || p.x<-30 || p.x>w+30 || p.y>h+30){
       particles[i] = p.decay ? makeParticle(true) : makeParticle(false);
-      if(p.decay) particles.splice(i,1);
+      if(p.decay) particles.splice(i,1), i--;
     }
   }
   anim=requestAnimationFrame(loop);
@@ -308,13 +368,40 @@ function loop(){
 /* Magnetic buttons */
 function initMagneticButtons(){
   if(reduceMotion || window.matchMedia('(pointer: coarse)').matches) return;
-  $$('.btn-primary, .btn-ghost').forEach(btn=>{
+  $$('.btn-primary, .btn-ghost, .nav-join').forEach(btn=>{
     btn.addEventListener('mousemove', e=>{
       const r=btn.getBoundingClientRect(), x=e.clientX-r.left-r.width/2, y=e.clientY-r.top-r.height/2;
       btn.style.transform=`translate(${x*0.08}px, ${y*0.08}px)`;
     });
     btn.addEventListener('mouseleave', ()=>{ btn.style.transform=''; });
   });
+}
+
+/* Scroll + ambient sync effects */
+function initScrollFx(){
+  const progress = $('#scrollProgress');
+  const header = $('#siteHeader');
+  const orbs = $$('.bg-orb');
+  const rings = $$('.stage-ring');
+  let ticking = false;
+  const onScroll = () => {
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{
+      const y = window.scrollY || 0;
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const p = h > 0 ? clamp(y / h, 0, 1) : 0;
+      if(progress) progress.style.transform = `scaleX(${p})`;
+      if(window.__setHeaderScrolled) window.__setHeaderScrolled(y > 12);
+      if(!reduceMotion){
+        orbs.forEach((orb, i) => { orb.style.translate = `0 ${y * (i===0?0.03:i===1?-0.02:0.015)}px`; });
+        rings.forEach((ring, i) => { ring.style.rotate = `${y * (i===0?0.02:-0.015)}deg`; });
+      }
+      ticking = false;
+    });
+  };
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
 }
 
 function randomFrom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
